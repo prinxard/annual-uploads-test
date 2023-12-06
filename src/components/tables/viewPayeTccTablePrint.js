@@ -182,7 +182,7 @@ export const ViewSinglePayeTccPrintTable = ({
       status: "Printed"
     }
     try {
-      let res = axios.put(`${url.BASE_URL}paye/tcc-status`, statusObj);
+      axios.put(`${url.BASE_URL}paye/tcc-status`, statusObj);
     } catch (error) {
       console.log(error);
     }
@@ -286,7 +286,7 @@ export const ViewSinglePayeTccPrintTable = ({
                         <img
                           src={`data:image/png;base64,${base64StringPic}`}
                           alt=""
-                          className="rounded h-16 w-16"
+                          className="rounded h-20 w-20"
                         />
                       </div>
                       <div className="self-end ml-2">
