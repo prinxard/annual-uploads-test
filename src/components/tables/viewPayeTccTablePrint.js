@@ -153,7 +153,7 @@ export const ViewSinglePayeTccPrintTable = ({
   oldSign
 }) => {
 
-  
+
   let basdocurl = 'https://annualuploads.bespoque.dev/rhm-live/uploads/paye/tcc/'
 
   let date = PayeTccData.aprvPrint_time
@@ -279,43 +279,63 @@ export const ViewSinglePayeTccPrintTable = ({
               </div>
 
               <div className="flex justify-between">
-                <div className="ml-4">
-                  {(Array.isArray(oldPass.data) && oldPass.data.length !== 0) || (Array.isArray(oldSign.data) && oldSign.data.length !== 0) ?
-                    <div className="flex">
-                      <div>
-                        <img
-                          src={`data:image/png;base64,${base64StringPic}`}
-                          alt=""
-                          className="rounded h-20 w-20"
-                        />
-                      </div>
-                      <div className="self-end ml-2">
-                        <img
-                          src={`data:image/png;base64,${base64StringSig}`}
-                          alt=""
-                          className="rounded h-10 w-24"
-                        />
-                      </div>
+                {passport?.length > 0 || signature?.length > 0 ?
+                  <div className="flex">
+                    <div>
+                      <img
+                        src={`${basdocurl}${passport}`}
+                        alt=""
+                        className="rounded h-16 w-16"
+                      />
                     </div>
-                    :
-                    <div className="flex">
-                      <div>
-                        <img
-                          src={`${basdocurl}${passport}`}
-                          alt=""
-                          className="rounded h-16 w-16"
-                        />
-                      </div>
-                      <div className="self-end ml-2">
-                        <img
-                          src={`${basdocurl}${signature}`}
-                          alt=""
-                          className="rounded h-10 w-24"
-                        />
-                      </div>
+                    <div className="self-end ml-2">
+                      <img
+                        src={`${basdocurl}${signature}`}
+                        alt=""
+                        className="rounded h-10 w-24"
+                      />
                     </div>
-                  }
-                </div>
+                  </div> :
+                  <div className="ml-4">
+                    {(Array.isArray(oldPass.data) && oldPass.data.length !== 0) || (Array.isArray(oldSign.data) && oldSign.data.length !== 0) ?
+                      <div className="flex">
+                        <div>
+                          <img
+                            src={`data:image/png;base64,${base64StringPic}`}
+                            alt=""
+                            className="rounded h-20 w-20"
+                          />
+                        </div>
+                        <div className="self-end ml-2">
+                          <img
+                            src={`data:image/png;base64,${base64StringSig}`}
+                            alt=""
+                            className="rounded h-10 w-24"
+                          />
+                        </div>
+                      </div>
+                      :
+                      <div className="flex">
+                        <div>
+                          <img
+                            src={`${basdocurl}${passport}`}
+                            alt=""
+                            className="rounded h-16 w-16"
+                          />
+                        </div>
+                        <div className="self-end ml-2">
+                          <img
+                            src={`${basdocurl}${signature}`}
+                            alt=""
+                            className="rounded h-10 w-24"
+                          />
+                        </div>
+                      </div>
+                    }
+                  </div>
+
+                }
+
                 <div>
                   <div>
                     <small className="leading-none block">File No</small>
@@ -436,7 +456,7 @@ export const ViewSinglePayeTccPrintTable = ({
                           <p className="font-bold">{formatNumber(PayeTccData.taxYr_3)}</p>
                         </td>
                         <td className="">
-                        <p>{PayeTccData?.taxYr_3_type  || "PAYE"}</p>
+                          <p>{PayeTccData?.taxYr_3_type || "PAYE"}</p>
                         </td>
 
                       </tr>
@@ -450,7 +470,7 @@ export const ViewSinglePayeTccPrintTable = ({
               </div>
               <p className="text-red-600 flex justify-center text-3xl">INCOME TAX CLEARANCE CERTIFICATE</p>
               <div className="flex justify-end mt-16">
-              
+
                 <div className="mr-20">
                   <QRCode
                     value={`https://irs.kg.gov.ng/verify/fetch_tcc.php?ref=${PayeTccData.ref}`}
