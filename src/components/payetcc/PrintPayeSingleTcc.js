@@ -43,11 +43,11 @@ const PrintSingleTccPaye = () => {
             setIsFetching(false);
             for (const record of uploads) {
               if (record.doc_title === "passport photo") {
-                 setSignature (record.doc_name);
+                setPassport(record.doc_name);
               } else if (record.doc_title === "scanned signature") {
-                  setPassport( record.doc_name);
+                setSignature(record.doc_name);
               }
-          }
+            }
             // let uploadsSign = uploads.find(v => v.doc_title === "scanned signature").doc_name
             // setSignature(uploadsSign)
             // let uploadsPassport = uploads.find(v => v.doc_title === "passport photo").doc_name

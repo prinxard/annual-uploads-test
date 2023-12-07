@@ -234,7 +234,8 @@ export const ViewSinglePayeTccPrintTable = ({
 
   } else { console.log(false); }
 
-  console.log("PayeTccData.taxYr_3_type", PayeTccData.taxYr_3_type);
+  console.log("PayeTccData.passport", passport);
+  console.log("signature", signature);
 
   return (
     <>
@@ -296,7 +297,7 @@ export const ViewSinglePayeTccPrintTable = ({
                       />
                     </div>
                   </div> :
-                  <div className="ml-4">
+                  <div className="">
                     {(Array.isArray(oldPass.data) && oldPass.data.length !== 0) || (Array.isArray(oldSign.data) && oldSign.data.length !== 0) ?
                       <div className="flex">
                         <div>
