@@ -4,6 +4,7 @@ metadata:
   name: rhm-app-ingress
 #  namespace: kgirs
   annotations:
+  cert-manager.io/cluster-issuer: letsencrypt-prod
     # Add any necessary annotations here (e.g., for load balancer, SSL termination, etc.)
 spec:
   # Replace 'example.com' with your actual domain or hostname
