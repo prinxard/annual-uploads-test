@@ -12,7 +12,7 @@ variables:
    TEST_DB: rhmapi
    LIVE_DB: rhmlive
    TLS_NAME_LIVE: rhmapp-tls
-   TLS_NAME_STAGINIG: rhmappstag-tls
+   TLS_NAME_STAGINIG: rhmappstag
 
 start_app:
    stage: test
