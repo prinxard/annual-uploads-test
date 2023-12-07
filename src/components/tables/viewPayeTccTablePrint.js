@@ -182,7 +182,7 @@ export const ViewSinglePayeTccPrintTable = ({
       status: "Printed"
     }
     try {
-      let res = axios.put(`${url.BASE_URL}paye/tcc-status`, statusObj);
+      axios.put(`${url.BASE_URL}paye/tcc-status`, statusObj);
     } catch (error) {
       console.log(error);
     }
@@ -234,7 +234,8 @@ export const ViewSinglePayeTccPrintTable = ({
 
   } else { console.log(false); }
 
-  console.log("PayeTccData.taxYr_3_type", PayeTccData.taxYr_3_type);
+  console.log("PayeTccData.passport", passport);
+  console.log("signature", signature);
 
   return (
     <>
@@ -279,43 +280,63 @@ export const ViewSinglePayeTccPrintTable = ({
               </div>
 
               <div className="flex justify-between">
-                <div className="ml-4">
-                  {(Array.isArray(oldPass.data) && oldPass.data.length !== 0) || (Array.isArray(oldSign.data) && oldSign.data.length !== 0) ?
-                    <div className="flex">
-                      <div>
-                        <img
-                          src={`data:image/png;base64,${base64StringPic}`}
-                          alt=""
-                          className="rounded h-16 w-16"
-                        />
-                      </div>
-                      <div className="self-end ml-2">
-                        <img
-                          src={`data:image/png;base64,${base64StringSig}`}
-                          alt=""
-                          className="rounded h-10 w-24"
-                        />
-                      </div>
+                {passport?.length > 0 || signature?.length > 0 ?
+                  <div className="flex">
+                    <div>
+                      <img
+                        src={`${basdocurl}${passport}`}
+                        alt=""
+                        className="rounded h-16 w-16"
+                      />
                     </div>
-                    :
-                    <div className="flex">
-                      <div>
-                        <img
-                          src={`${basdocurl}${passport}`}
-                          alt=""
-                          className="rounded h-16 w-16"
-                        />
-                      </div>
-                      <div className="self-end ml-2">
-                        <img
-                          src={`${basdocurl}${signature}`}
-                          alt=""
-                          className="rounded h-10 w-24"
-                        />
-                      </div>
+                    <div className="self-end ml-2">
+                      <img
+                        src={`${basdocurl}${signature}`}
+                        alt=""
+                        className="rounded h-10 w-24"
+                      />
                     </div>
-                  }
-                </div>
+                  </div> :
+                  <div className="">
+                    {(Array.isArray(oldPass.data) && oldPass.data.length !== 0) || (Array.isArray(oldSign.data) && oldSign.data.length !== 0) ?
+                      <div className="flex">
+                        <div>
+                          <img
+                            src={`data:image/png;base64,${base64StringPic}`}
+                            alt=""
+                            className="rounded h-20 w-20"
+                          />
+                        </div>
+                        <div className="self-end ml-2">
+                          <img
+                            src={`data:image/png;base64,${base64StringSig}`}
+                            alt=""
+                            className="rounded h-10 w-24"
+                          />
+                        </div>
+                      </div>
+                      :
+                      <div className="flex">
+                        <div>
+                          <img
+                            src={`${basdocurl}${passport}`}
+                            alt=""
+                            className="rounded h-16 w-16"
+                          />
+                        </div>
+                        <div className="self-end ml-2">
+                          <img
+                            src={`${basdocurl}${signature}`}
+                            alt=""
+                            className="rounded h-10 w-24"
+                          />
+                        </div>
+                      </div>
+                    }
+                  </div>
+
+                }
+
                 <div>
                   <div>
                     <small className="leading-none block">File No</small>

@@ -41,10 +41,17 @@ const PrintSingleTccPaye = () => {
             setYrThreePaySl(payslipY3)
             setPayeTccData(response.data.body.tcc[0])
             setIsFetching(false);
-            let uploadsSign = uploads.find(v => v.doc_title === "scanned signature").doc_name
-            setSignature(uploadsSign)
-            let uploadsPassport = uploads.find(v => v.doc_title === "passport photo").doc_name
-            setPassport(uploadsPassport)
+            for (const record of uploads) {
+              if (record.doc_title === "passport photo") {
+                setPassport(record.doc_name);
+              } else if (record.doc_title === "scanned signature") {
+                setSignature(record.doc_name);
+              }
+            }
+            // let uploadsSign = uploads.find(v => v.doc_title === "scanned signature").doc_name
+            // setSignature(uploadsSign)
+            // let uploadsPassport = uploads.find(v => v.doc_title === "passport photo").doc_name
+            // setPassport(uploadsPassport)
 
           })
           .catch(function (error) {
