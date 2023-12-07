@@ -62,7 +62,7 @@ deploy_stage:
       name: staging
       url: http://$STAGING_DOMAIN
    when: manual
-   only:
+   except:
       - main
    image:
       name: bitnami/kubectl:latest
