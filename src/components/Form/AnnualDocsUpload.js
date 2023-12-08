@@ -1,15 +1,17 @@
 import { useRef, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, shallowEqual } from 'react-redux';
-import Widget from '../widget';
+import Widget from '../../components/widget/index';
 import axios from 'axios';
 import url from '../../config/url';
-import { FiX, FiCheck } from 'react-icons/fi';
+import { FiCheck } from 'react-icons/fi';
 import setAuthToken from '../../functions/setAuthToken';
-import { ProcessorSpinner, Progress } from '../spiner/index';
-import { SelectAnnual, SelectMonth } from '../forms/selects';
+import { Progress } from '../../components/spiner/index';
+import { useRouter } from 'next/router';
 
-const AnnualDocsUploadForm = () => {
+
+
+const AnnualSupDocs = () => {
   //handle file
   const [file, setFile] = useState(null);
   const [file2, setFile2] = useState(null);
@@ -101,9 +103,33 @@ const AnnualDocsUploadForm = () => {
   const [submitting16, setSubmitting16] = useState(false);
   const [submitting17, setSubmitting17] = useState(false);
   const [submitting18, setSubmitting18] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const { handleSubmit } = useForm();
+  const modalRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const router = useRouter()
+  const { year, kgtin } = router.query;
 
 
+  const { palettes } = useSelector(
+    (state) => ({
+      palettes: state.palettes,
+      auth: state.authentication.auth
+    }),
+    shallowEqual
+  );
+
+  let { background } = {
+    ...palettes,
+  };
+
+  const show = () => {
+    setOpen(true);
+  };
+
+  const hide = () => {
+    setOpen(false);
+    router.push('/dashboard');
+  };
 
   const onChange = e => {
     const file = e.target.files[0]
@@ -119,8 +145,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled(true);
         return;
       }
-      if (file.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -130,30 +156,7 @@ const AnnualDocsUploadForm = () => {
     }
   };
 
-  const onChange2 = e => {
-    const file2 = e.target.files[0]
-    if (file2) {
-      if (!file2) {
-        setFile2(null);
-        setDisabled2(true);
-        return;
-      }
-      if (file2.type !== "image/jpeg" && file2.type !== "application/pdf" && file2.type !== "image/png") {
-        alert("file type not allowed. only pdf, png and jpeg are allowed");
-        setFile2(null);
-        setDisabled2(true);
-        return;
-      }
-      if (file2.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
-        return
-      }
-      else {
-        setFile2(file2);
-        setDisabled2(false);
-      }
-    }
-  };
+
 
   const onChange3 = e => {
     const file3 = e.target.files[0]
@@ -169,8 +172,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled3(true);
         return;
       }
-      if (file3.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file3.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100");
         return
       }
       else {
@@ -182,20 +185,21 @@ const AnnualDocsUploadForm = () => {
 
   const onChange4 = e => {
     const file4 = e.target.files[0]
+    const filetype = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
     if (file4) {
       if (!file4) {
         setFile4(null);
         setDisabled4(true);
         return;
       }
-      if (file4.type !== "application/vnd.ms-excel") {
-        alert("file type not allowed. only excel is allowed");
+      if (!filetype.includes(file4.type)) {
+        alert("file type not allowed. only excel/CSV is allowed");
         setFile4(null);
         setDisabled4(true);
         return;
       }
-      if (file4.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file4.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -219,8 +223,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled5(true);
         return;
       }
-      if (file5.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file5.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -232,20 +236,27 @@ const AnnualDocsUploadForm = () => {
 
   const onChange6 = e => {
     const file6 = e.target.files[0]
+    const filetype = ['text/csv',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
     if (file6) {
       if (!file6) {
         setFile6(null);
         setDisabled6(true);
         return;
       }
-      if (file6.type !== "application/vnd.ms-excel" && file6.type !== "application/pdf" && file6.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-        alert("file type not allowed. only pdf word or excel are allowed");
+      if (!filetype.includes(file6.type)) {
+        alert("file type not allowed. only pdf, word, excel or csv are allowed");
         setFile6(null);
         setDisabled6(true);
         return;
       }
-      if (file6.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file6.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -256,30 +267,6 @@ const AnnualDocsUploadForm = () => {
     }
   };
 
-  const onChange7 = e => {
-    const file7 = e.target.files[0]
-    if (file7) {
-      if (!file7) {
-        setFile7(null);
-        setDisabled7(true);
-        return;
-      }
-      // if (file7.type !== "application/vnd.ms-excel" && file7.type !== "application/pdf" && file7.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-      //   alert("file type not allowed. only pdf word or excel are allowed");
-      //   setFile7(null);
-      //   setDisabled7(true);
-      //   return;
-      // }
-      // if (file7.size > 1024 * 200) {
-      //   alert("file too large..file size shoulde not exceed 200kb");
-      //   return
-      // }
-      else {
-        setFile7(file7);
-        setDisabled7(false);
-      }
-    }
-  };
 
   const onChange8 = e => {
     const file8 = e.target.files[0]
@@ -295,8 +282,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled8(true);
         return;
       }
-      if (file8.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file8.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -320,8 +307,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled9(true);
         return;
       }
-      if (file9.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file9.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -345,8 +332,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled10(true);
         return;
       }
-      if (file10.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file10.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -370,8 +357,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled11(true);
         return;
       }
-      if (file11.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file11.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -395,8 +382,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled12(true);
         return;
       }
-      if (file12.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file12.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -419,8 +406,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled13(true);
         return;
       }
-      if (file13.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file13.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -444,8 +431,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled14(true);
         return;
       }
-      if (file14.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file14.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -469,8 +456,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled15(true);
         return;
       }
-      if (file15.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file15.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -494,8 +481,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled16(true);
         return;
       }
-      if (file16.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file16.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -519,8 +506,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled17(true);
         return;
       }
-      if (file17.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file17.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -544,8 +531,8 @@ const AnnualDocsUploadForm = () => {
         setDisabled18(true);
         return;
       }
-      if (file18.size > 1024 * 200) {
-        alert("file too large..file size shoulde not exceed 200kb");
+      if (file18.size > 1024 * 100) {
+        alert("file too large..file size shoulde not exceed 100kb");
         return
       }
       else {
@@ -555,17 +542,15 @@ const AnnualDocsUploadForm = () => {
     }
   };
 
-  const onSubmit = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year
+  const onSubmit = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('cover_letter', file);
     formData.append('year', year);
     setAuthToken();
     setSubmitting(true)
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -583,7 +568,6 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile(true);
       setFile(null)
       setDisabled(true)
-      console.log(data.response.body);
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -595,61 +579,20 @@ const AnnualDocsUploadForm = () => {
         setSubmitting(false)
       }
     }
+
   };
 
-  const onSubmit2 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
-    const formData = new FormData();
-    formData.append('employer_id', employer_id);
-    formData.append('indv_return_letter', file2);
-    formData.append('year', year);
-    setAuthToken();
-    setSubmitting2(true)
-    try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: progressEvent => {
-          setUploadPercentage2(
-            parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            )
-          );
-        }
 
-      });
 
-      setSubmitting2(false)
-      setUploadedFile2(true);
-      setFile2(null)
-      setDisabled2(true)
-      console.log(data.response.body);
-    } catch (err) {
-      if (err.response === 500) {
-        console.log('There was a problem with the server');
-      } else {
-        console.log(err);
-        setFile2(null)
-        setDisabled2(true)
-        setUploadPercentage2(0)
-        setSubmitting2(false)
-      }
-    }
-  };
-
-  const onSubmit3 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit3 = async () => {
     const formData = new FormData();
     formData.append('exp_order_letter', file3);
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('year', year);
     setAuthToken();
     setSubmitting3(true)
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -667,7 +610,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile3(true);
       setFile3(null)
       setDisabled3(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -679,19 +622,20 @@ const AnnualDocsUploadForm = () => {
         setSubmitting3(false)
       }
     }
+
   };
 
-  const onSubmit4 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit4 = async () => {
+
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('mnthly_pay_sched', file4);
     formData.append('year', year);
     setAuthToken();
     setSubmitting4(true)
+
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -709,7 +653,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile4(true);
       setFile4(null)
       setDisabled4(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -721,13 +665,12 @@ const AnnualDocsUploadForm = () => {
         setSubmitting4(false)
       }
     }
+
   };
 
-  const onSubmit5 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit5 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('paye_remittance', file5);
     formData.append('year', year);
 
@@ -735,7 +678,7 @@ const AnnualDocsUploadForm = () => {
     setSubmitting5(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -753,7 +696,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile5(true);
       setFile5(null)
       setDisabled5(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -767,11 +710,10 @@ const AnnualDocsUploadForm = () => {
     }
   };
 
-  const onSubmit6 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit6 = async () => {
+
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('exit_staff_list', file6);
     formData.append('year', year);
 
@@ -779,7 +721,7 @@ const AnnualDocsUploadForm = () => {
     setSubmitting6(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -797,7 +739,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile6(true);
       setFile6(null)
       setDisabled6(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -809,57 +751,13 @@ const AnnualDocsUploadForm = () => {
         setSubmitting6(false)
       }
     }
+
   };
 
-  const onSubmit7 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year
+
+  const onSubmit8 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
-    formData.append('endyr_trial_bal', file7);
-    formData.append('year', year);
-
-    setAuthToken();
-    setSubmitting7(true)
-
-    try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: progressEvent => {
-          setUploadPercentage7(
-            parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            )
-          );
-        }
-
-      });
-
-      setSubmitting7(false)
-      setUploadedFile7(true);
-      setFile7(null)
-      setDisabled7(true)
-      console.log(data.response.body);
-    } catch (err) {
-      if (err.response === 500) {
-        console.log('There was a problem with the server');
-      } else {
-        console.log(err);
-        setFile7(null)
-        setDisabled7(true)
-        setUploadPercentage7(0)
-        setSubmitting7(false)
-      }
-    }
-  };
-
-  const onSubmit8 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
-    const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('wht_tax_deduct', file8);
     formData.append('year', year);
 
@@ -867,7 +765,7 @@ const AnnualDocsUploadForm = () => {
     setSubmitting8(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -885,7 +783,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile8(true);
       setFile8(null)
       setDisabled8(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -897,13 +795,12 @@ const AnnualDocsUploadForm = () => {
         setSubmitting8(false)
       }
     }
+
   };
 
-  const onSubmit9 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit9 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('wht_tax_receipts', file9);
     formData.append('year', year);
 
@@ -911,7 +808,7 @@ const AnnualDocsUploadForm = () => {
     setSubmitting9(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -929,7 +826,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile9(true);
       setFile9(null)
       setDisabled9(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -943,11 +840,9 @@ const AnnualDocsUploadForm = () => {
     }
   };
 
-  const onSubmit10 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit10 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('mnthly_immi_returns', file10);
     formData.append('year', year);
 
@@ -955,7 +850,7 @@ const AnnualDocsUploadForm = () => {
     setSubmitting10(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -973,7 +868,6 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile10(true);
       setFile10(null)
       setDisabled10(true)
-      console.log(data.response.body);
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -985,13 +879,12 @@ const AnnualDocsUploadForm = () => {
         setSubmitting10(false)
       }
     }
+
   };
 
-  const onSubmit11 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit11 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('dev_levy_receipts', file11);
     formData.append('year', year);
 
@@ -999,7 +892,7 @@ const AnnualDocsUploadForm = () => {
     setSubmitting11(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -1017,7 +910,6 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile11(true);
       setFile11(null)
       setDisabled11(true)
-      console.log(data.response.body);
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -1031,11 +923,9 @@ const AnnualDocsUploadForm = () => {
     }
   };
 
-  const onSubmit12 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit12 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('bus_premises_receipt', file12);
     formData.append('year', year);
 
@@ -1043,7 +933,7 @@ const AnnualDocsUploadForm = () => {
     setSubmitting12(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -1061,7 +951,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile12(true);
       setFile12(null)
       setDisabled12(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -1073,21 +963,18 @@ const AnnualDocsUploadForm = () => {
         setSubmitting12(false)
       }
     }
+
   };
 
   const onSubmit13 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('grnd_rent_receipts', file13);
     formData.append('year', year);
-
-    setAuthToken();
     setSubmitting13(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -1105,7 +992,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile13(true);
       setFile13(null)
       setDisabled13(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -1119,11 +1006,9 @@ const AnnualDocsUploadForm = () => {
     }
   };
 
-  const onSubmit14 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit14 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('sscl', file14);
     formData.append('year', year);
 
@@ -1131,7 +1016,7 @@ const AnnualDocsUploadForm = () => {
     setSubmitting14(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -1149,7 +1034,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile14(true);
       setFile14(null)
       setDisabled14(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -1161,21 +1046,18 @@ const AnnualDocsUploadForm = () => {
         setSubmitting14(false)
       }
     }
+
   };
 
-  const onSubmit15 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit15 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('pension_remittance', file15);
     formData.append('year', year);
-
-    setAuthToken();
     setSubmitting15(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -1193,7 +1075,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile15(true);
       setFile15(null)
       setDisabled15(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -1205,21 +1087,19 @@ const AnnualDocsUploadForm = () => {
         setSubmitting15(false)
       }
     }
+
   };
 
-  const onSubmit16 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit16 = async () => {
+
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('nhf_remittance', file16);
     formData.append('year', year);
-
-    setAuthToken();
     setSubmitting16(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -1237,7 +1117,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile16(true);
       setFile16(null)
       setDisabled16(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -1251,19 +1131,15 @@ const AnnualDocsUploadForm = () => {
     }
   };
 
-  const onSubmit17 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    const year = data.year;
+  const onSubmit17 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('nhis_remittance', file17);
     formData.append('year', year);
-
-    setAuthToken();
     setSubmitting17(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -1281,7 +1157,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile17(true);
       setFile17(null)
       setDisabled17(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -1293,22 +1169,18 @@ const AnnualDocsUploadForm = () => {
         setSubmitting17(false)
       }
     }
+
   };
 
-  const onSubmit18 = async data => {
-    let employer_id = localStorage.getItem("kgtin")
-    console.log(data.year);
-    const year = data.year;
+  const onSubmit18 = async () => {
     const formData = new FormData();
-    formData.append('employer_id', employer_id);
+    formData.append('employer_id', kgtin);
     formData.append('lap_remittance', file18);
     formData.append('year', year);
-
-    setAuthToken();
     setSubmitting18(true)
 
     try {
-      const res = await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
+      await axios.post(`${url.BASE_URL}annual/upload-annual-doc`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -1326,7 +1198,7 @@ const AnnualDocsUploadForm = () => {
       setUploadedFile18(true);
       setFile18(null)
       setDisabled18(true)
-      console.log(data.response.body);
+
     } catch (err) {
       if (err.response === 500) {
         console.log('There was a problem with the server');
@@ -1338,27 +1210,109 @@ const AnnualDocsUploadForm = () => {
         setSubmitting18(false)
       }
     }
+
   };
+
+  const SubmitUploads = () => {
+    let kgtinyear = {
+      year: year,
+      employerId: kgtin
+    }
+    setSubmitting(true)
+    axios.post(`${url.BASE_URL}annual/submit-annual-returns`, kgtinyear)
+      .then(function (response) {
+        setSubmitting(false)
+        show()
+      }).catch(function (error) {
+        setSubmitting(false)
+        if (error.response) {
+          alert(`${error.response.data.message} for ${year}`);
+        }
+        console.log(error);
+      })
+
+  }
+
 
   return (
     <>
+      {open && (
+        <>
+          <div className="modal-backdrop fade-in"></div>
+          <div
+            className={`modal show ${background === 'dark' ? 'dark' : ''}`}
+            data-background={background}
+          >
+            <div
+              className="relative w-auto lg:my-4 mx-auto lg:max-w-lg max-w-sm"
+              ref={modalRef}
+            >
+              <div className="bg-white  text-gray-900 border-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-700 border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none">
+                <div className="relative p-4 flex-auto">
+                  <div className="flex items-start justify-start p-2 space-x-4">
+                    <div className="flex-shrink-0 w-12">
+
+                      <span className="h-10 w-10 bg-green-100 text-white flex items-center justify-center rounded-full text-lg font-display font-bold">
+                        <FiCheck
+                          size={18}
+                          className="stroke-current text-green-500"
+                        />
+                      </span>
+
+                    </div>
+                    <div className="w-full">
+                      <div className=" mb-2 font-bold">
+
+                        <span className="mb-2">Submit Successful!</span>
+                      </div>
+                      <ul>
+                        <li>
+                          <span className="font-bold">*</span> Acknowledgment evidence will be sent via email within 48 working hrs
+                        </li>
+                        <li>
+                          <span className="font-bold">*</span> A notification will be sent to you upon approval of your uploaded documents
+                        </li>
+                      </ul>
+
+                      <div className="overflow-auto max-h-64">
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-end p-4 border-t border-gray-200 dark:border-gray-700 border-solid rounded-b space-x-2">
+                  <button
+                    className="btn btn-default btn-rounded bg-white hover:bg-gray-100 text-gray-900"
+                    type="button"
+                    onClick={hide}
+                  >
+                    Ok
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      <div className="flex justify-end">
+        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded my-2" onClick={() => router.back()}>
+          Back
+        </button>
+      </div>
       <div className="flex justify-center flex-col lg:flex-row lg:flex-wrap w-full lg:space-x-4">
         <div className="w-full lg:w-1/12">
-          <SelectAnnual
-            label="Select Year"
-            required
-            ref={register()}
-            name="year"
-          />
+          <p className="font-bold">Year <span>{year}</span></p>
         </div>
       </div>
       <h6 className="p-2 font-bold">Correspondence</h6>
+      <p className="flex justify-center">Documents should not exceed 100kb</p>
       <Widget>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
 
             <div className="flex justify-between mb-5">
-              <p>Cover letter of submission of annual returns <small>(pdf, jpg, png)</small> </p>
+              <p>Cover letter for the submission of annual returns <small>(pdf, jpg, png)</small> </p>
               <input
                 type="file"
                 className="hidden"
@@ -1404,63 +1358,13 @@ const AnnualDocsUploadForm = () => {
             </div>
           </form>
 
-          <hr className="mb-2" />
 
-          <form onSubmit={handleSubmit(onSubmit2)}>
-            <div className="flex justify-between mb-5">
-              <p>Copy of letter mandating employees to file individual tax returns  <small>(pdf, jpg, png)</small></p>
-              <input
-                type="file"
-                className="hidden"
-                id='customFile2'
-                onChange={onChange2}
-                onClick={(e) => (e.target.value = null)}
-              />
-
-              <div className="flex justify-evenly">
-
-                <p >{file2 ? file2.name : ""}</p>
-
-                <label
-                  htmlFor='customFile2'
-                  style={{ backgroundColor: "#84abeb" }}
-                  className="btn btn-default text-white btn-outlined bg-transparent rounded-md mx-2"
-                >
-                  Select File
-                </label>
-
-                <button
-                  style={{ backgroundColor: "#84abeb" }}
-                  className="btn btn-default text-white btn-outlined bg-transparent rounded-md mx-2"
-                  type="submit"
-                  disabled={disabled2}
-                >
-                  Submit
-                </button>
-
-                {submitting2 ?
-                  <div className='mb-2 w-24'>
-                    <Progress percentage={uploadPercentage2} />
-                  </div>
-                  : ''}
-
-                {uploadedFile2 ? (
-                  <span className="h-10 w-10 bg-green-100 text-white flex items-center justify-center rounded-full text-lg font-display font-bold">
-                    <FiCheck
-                      size={18}
-                      className="stroke-current text-green-500"
-                    />
-                  </span>) : null}
-
-              </div>
-            </div>
-          </form>
 
           <hr className="mb-2" />
 
           <form onSubmit={handleSubmit(onSubmit3)}>
             <div className="flex justify-between mb-5">
-              <p>Letter of expertriate order <small>[where applicable]</small> <small>(pdf, jpg, png)</small> </p>
+              <p>Letter of expatriate quota <small>[where applicable]</small> <small>(pdf, jpg, png)</small> </p>
               <input
                 type="file"
                 className="hidden"
@@ -1520,7 +1424,7 @@ const AnnualDocsUploadForm = () => {
         <div>
           <form onSubmit={handleSubmit(onSubmit4)}>
             <div className="flex justify-between mb-5">
-              <p>Monthly payroll schedule <small>(excel)</small> </p>
+              <p>Monthly payroll schedule <small>(excel/CSV)</small> </p>
               <input
                 required
                 type="file"
@@ -1625,7 +1529,7 @@ const AnnualDocsUploadForm = () => {
 
           <form onSubmit={handleSubmit(onSubmit6)}>
             <div className="flex justify-between mb-5">
-              <p>List of exit staff  <small>(pdf, word, excel)</small> </p>
+              <p>List of exit staff  <small>(pdf, word, excel/CSV)</small> </p>
               <input
                 id="customFile6"
                 type="file"
@@ -1674,54 +1578,6 @@ const AnnualDocsUploadForm = () => {
           <hr className="mb-2" />
 
 
-          <form onSubmit={handleSubmit(onSubmit7)}>
-            <div className="flex justify-between mb-5">
-              <p>Trial balance for the year ended 31st Dec. 2021 </p>
-              <input
-                id="customFile7"
-                type="file"
-                className="hidden"
-                onChange={onChange7}
-                onClick={(e) => (e.target.value = null)}
-              />
-              <div className="flex items-center">
-
-                <p>{file7 ? file7.name : ""}</p>
-
-                <label
-                  htmlFor='customFile7'
-                  style={{ backgroundColor: "#84abeb" }}
-                  className="btn btn-default text-white rounded-md btn-outlined bg-transparent mx-2"
-                >
-                  select file
-                </label>
-
-                <button
-                  style={{ backgroundColor: "#84abeb" }}
-                  className="btn btn-default text-white btn-outlined bg-transparent rounded-md mx-2"
-                  type="submit"
-                  disabled={disabled7}
-                >
-                  Submit
-                </button>
-
-                {submitting7 ?
-                  <div className='mb-2 w-24'>
-                    <Progress percentage={uploadPercentage7} />
-                  </div>
-                  : ''}
-
-                {uploadedFile7 ? (
-                  <span className="h-10 w-10 bg-green-100 text-white flex items-center justify-center rounded-full text-lg font-display font-bold">
-                    <FiCheck
-                      size={18}
-                      className="stroke-current text-green-500"
-                    />
-                  </span>) : null}
-
-              </div>
-            </div>
-          </form>
         </div>
       </Widget>
 
@@ -1733,7 +1589,6 @@ const AnnualDocsUploadForm = () => {
       <Widget>
         <form onSubmit={handleSubmit(onSubmit8)}>
           <div className="flex justify-between mb-5">
-            {/* <p>Schedule of withholding tax deductions  <small> (excel, pdf)</small><br /><span className="flex justify-end" style={{ color: "blue" }}><Link href="/csv/wht.csv"> download </Link></span></p> */}
             <p>Schedule of withholding tax deductions  <small> (excel, pdf)</small><br /><span className="flex justify-end" style={{ color: "blue" }}></span></p>
             <input
               id="customFile8"
@@ -2248,6 +2103,8 @@ const AnnualDocsUploadForm = () => {
           </div>
         </form>
 
+        <hr className="mb-2" />
+
         <form onSubmit={handleSubmit(onSubmit18)}>
           <div className="flex justify-between mb-5">
             <p>Evidence of remittance of LAP   <small>(pdf, jpg, png)</small></p>
@@ -2296,10 +2153,19 @@ const AnnualDocsUploadForm = () => {
             </div>
           </div>
         </form>
+        <div className="flex justify-center">
+          <button
+            className="disabled:opacity-50 bg-green-500 py-2 px-6 rounded-md  text-white border hover:text-white hover:bg-white-500 hover:border-green-500"
+            type="submit"
+            onClick={() => handleSubmit(SubmitUploads)()}
+          >
+            Submit
+          </button>
+        </div>
       </Widget>
 
     </>
   );
 };
 
-export default AnnualDocsUploadForm;
+export default AnnualSupDocs;
