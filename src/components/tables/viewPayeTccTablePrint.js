@@ -211,7 +211,6 @@ export const ViewSinglePayeTccPrintTable = ({
     year1ConRel = yrOnePaySl.consolidated_relief
     year1OtherRelief = yrOnePaySl.other_relief
   }
-  console.log("yrOnePaySl[0].consolidated_relief", yrOnePaySl);
   if (yrTwoPaySl[0] == undefined) {
     year2ConRel = 0
     year2OtherRelief = 0
@@ -230,12 +229,7 @@ export const ViewSinglePayeTccPrintTable = ({
     year3OtherRelief = yrThreePaySl[0].other_relief
   }
 
-  if (oldPass.data == []) {
 
-  } else { console.log(false); }
-
-  console.log("PayeTccData.passport", passport);
-  console.log("signature", signature);
 
   return (
     <>
@@ -455,7 +449,8 @@ export const ViewSinglePayeTccPrintTable = ({
                           <p className="font-bold">{formatNumber(PayeTccData.taxYr_3)}</p>
                         </td>
                         <td className="">
-                          <p>{PayeTccData?.taxYr_3_type || "PAYE"}</p>
+                          {/* <p>{PayeTccData?.taxYr_3_type || "PAYE"}</p> */}
+                          <p>PAYE</p>
                         </td>
 
                       </tr>
