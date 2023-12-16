@@ -226,7 +226,6 @@ function ViewAnnualDocs() {
                 setIsFetching(false)
                 toast.success("Success!");
                 router.push('/paye-annual')
-                console.log(response);
             })
             .catch(function (error) {
                 toast.error("Failed!");
