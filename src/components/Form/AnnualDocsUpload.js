@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, shallowEqual } from 'react-redux';
 import Widget from '../../components/widget/index';
@@ -14,12 +14,10 @@ import { useRouter } from 'next/router';
 const AnnualSupDocs = () => {
   //handle file
   const [file, setFile] = useState(null);
-  const [file2, setFile2] = useState(null);
   const [file3, setFile3] = useState(null);
   const [file4, setFile4] = useState(null);
   const [file5, setFile5] = useState(null);
   const [file6, setFile6] = useState(null);
-  const [file7, setFile7] = useState(null);
   const [file8, setFile8] = useState(null);
   const [file9, setFile9] = useState(null);
   const [file10, setFile10] = useState(null);
@@ -32,12 +30,10 @@ const AnnualSupDocs = () => {
   const [file17, setFile17] = useState(null);
   const [file18, setFile18] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(false);
-  const [uploadedFile2, setUploadedFile2] = useState(false);
   const [uploadedFile3, setUploadedFile3] = useState(false);
   const [uploadedFile4, setUploadedFile4] = useState(false);
   const [uploadedFile5, setUploadedFile5] = useState(false);
   const [uploadedFile6, setUploadedFile6] = useState(false);
-  const [uploadedFile7, setUploadedFile7] = useState(false);
   const [uploadedFile8, setUploadedFile8] = useState(false);
   const [uploadedFile9, setUploadedFile9] = useState(false);
   const [uploadedFile10, setUploadedFile10] = useState(false);
@@ -50,12 +46,10 @@ const AnnualSupDocs = () => {
   const [uploadedFile17, setUploadedFile17] = useState(false);
   const [uploadedFile18, setUploadedFile18] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const [disabled2, setDisabled2] = useState(true);
   const [disabled3, setDisabled3] = useState(true);
   const [disabled4, setDisabled4] = useState(true);
   const [disabled5, setDisabled5] = useState(true);
   const [disabled6, setDisabled6] = useState(true);
-  const [disabled7, setDisabled7] = useState(true);
   const [disabled8, setDisabled8] = useState(true);
   const [disabled9, setDisabled9] = useState(true);
   const [disabled10, setDisabled10] = useState(true);
@@ -68,12 +62,10 @@ const AnnualSupDocs = () => {
   const [disabled17, setDisabled17] = useState(true);
   const [disabled18, setDisabled18] = useState(true);
   const [uploadPercentage, setUploadPercentage] = useState(0);
-  const [uploadPercentage2, setUploadPercentage2] = useState(0);
   const [uploadPercentage3, setUploadPercentage3] = useState(0);
   const [uploadPercentage4, setUploadPercentage4] = useState(0);
   const [uploadPercentage5, setUploadPercentage5] = useState(0);
   const [uploadPercentage6, setUploadPercentage6] = useState(0);
-  const [uploadPercentage7, setUploadPercentage7] = useState(0);
   const [uploadPercentage8, setUploadPercentage8] = useState(0);
   const [uploadPercentage9, setUploadPercentage9] = useState(0);
   const [uploadPercentage10, setUploadPercentage10] = useState(0);
@@ -86,12 +78,10 @@ const AnnualSupDocs = () => {
   const [uploadPercentage17, setUploadPercentage17] = useState(0);
   const [uploadPercentage18, setUploadPercentage18] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [submitting2, setSubmitting2] = useState(false);
   const [submitting3, setSubmitting3] = useState(false);
   const [submitting4, setSubmitting4] = useState(false);
   const [submitting5, setSubmitting5] = useState(false);
   const [submitting6, setSubmitting6] = useState(false);
-  const [submitting7, setSubmitting7] = useState(false);
   const [submitting8, setSubmitting8] = useState(false);
   const [submitting9, setSubmitting9] = useState(false);
   const [submitting10, setSubmitting10] = useState(false);

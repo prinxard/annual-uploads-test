@@ -76,9 +76,6 @@ export default function AuditReportList() {
 
  
 
-
- 
-
     const startDate = job?.job_auditdate_start || "";
     const endDate = job?.job_auditdate_end || "";
 

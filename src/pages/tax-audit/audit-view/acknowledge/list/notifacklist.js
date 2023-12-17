@@ -64,7 +64,7 @@ export default function Notifiacklist() {
             field: "ack_by",
         },
         {
-            title: "Channel",
+            title: "Delivery method",
             field: "ack_channel",
         },
         {

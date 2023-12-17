@@ -4,9 +4,8 @@ import SectionTitle from '../../components/section-title/index'
 import setAuthToken from '../../functions/setAuthToken';
 import axios from 'axios';
 import url from '../../config/url';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useForm } from 'react-hook-form';
 import { ProcessorSpinner } from '../../components/spiner';
 
 export default function Index() {
@@ -18,8 +17,6 @@ export default function Index() {
     const [tpkgtin, setTpKgtin] = useState("")
     const [tpOffice, setTpOffice] = useState("")
    
-
-
 
 
     const handleTaxIdChange = (e) => {

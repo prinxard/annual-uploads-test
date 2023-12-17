@@ -10,9 +10,9 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
     const [taxScheduleFiles, setTaxScheduleFiles] = useState(null);
     const [remittanceFiles, setRemittanceFiles] = useState(null);
     const [documentFiles, setDocumentFiles] = useState(null);
-    const [amount, setAmount] = useState([]);
+    const [amount, setAmount] = useState('');
     const [isFetching, setIsFetching] = useState(() => false);
-   
+
 
     const { auth } = useSelector(
         (state) => ({
@@ -29,10 +29,29 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
     };
 
     const handleTaxScheduleChange = (event) => {
-        setTaxScheduleFiles(event.target.files[0]);
+        let file = event.target.files[0]
+        const filetype = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+        if (file) {
+
+            if (!filetype.includes(file.type)) {
+                alert("file type not allowed. only excel/CSV is allowed");
+                setTaxScheduleFiles(null);
+                return;
+            }
+            if (file.size > 1024 * 100) {
+                alert("file too large..file size shoulde not exceed 100kb");
+                return
+            }
+            else {
+                setTaxScheduleFiles(file);
+            }
+        }
     };
     const handleAmountChange = (event) => {
-        setAmount(event.target.value);
+        const { value } = event.target;
+        const onlyNumbers = value.replace(/[^0-9]/g, '');
+        const formattedValue = new Intl.NumberFormat().format(onlyNumbers);
+        setAmount(formattedValue);
     };
 
     const handleRemittanceChange = (event) => {
@@ -42,10 +61,11 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
         setDocumentFiles(event.target.files[0]);
     };
 
-    
+
     const handleUpload = async () => {
         toggleVis(false)
         const formData = new FormData();
+        let amountFormatted = amount?.replace(/,/g, '')
         if (
             (checklistItemType === 'EXCEL' &&
                 selectedYear &&
@@ -63,7 +83,7 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
                 formData.append("schedule", taxScheduleFiles)
                 formData.append("document", remittanceFiles)
                 formData.append("year", selectedYear)
-                formData.append("RemittedAmount", amount)
+                formData.append("RemittedAmount", amountFormatted)
                 formData.append("doneby", emailAdd)
                 formData.append("CheckListID", checklistItemID)
                 setIsFetching(true)
@@ -72,8 +92,8 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
                         method: 'POST',
                         body: formData
                     })
-                      changeScope("")
-                      toggleVis(true)
+                    changeScope("")
+                    toggleVis(true)
                     const dataFetch = await res.json()
                     setIsFetching(false)
                     if (dataFetch.status === "400") {
@@ -106,8 +126,8 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
                         method: 'POST',
                         body: formData
                     })
-                      changeScope("")
-                      toggleVis(true)
+                    changeScope("")
+                    toggleVis(true)
                     const dataFetch = await res.json()
                     setIsFetching(false)
                     if (dataFetch.status === "400") {
@@ -122,7 +142,7 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
                 }
             }
 
-            onUpload(selectedYear, taxScheduleFiles, remittanceFiles, amount, documentFiles, checklistItem);
+            onUpload(selectedYear, taxScheduleFiles, remittanceFiles, amountFormatted, documentFiles, checklistItem);
         } else {
             toggleVis(true)
             alert('Please fill in all required fields.');
@@ -150,18 +170,26 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
                 </div>
             </div>
             {checklistItemType === "EXCEL" ?
-                <div className="flex gap-2">
+                <div className="grid grid-cols-3 my-5">
                     <div>
                         <label htmlFor="amount" className=" text-gray-700 text-sm font-bold">
                             Remitted amount:
                         </label>
-                        <input type="text" id="amount" className="px-2 py-2 border rounded-md" onChange={handleAmountChange} />
+                        <input type="text" value={amount} id="amount" className="px-2 py-2 border rounded-md" onChange={handleAmountChange} />
                     </div>
                     <div>
-                        <label htmlFor="taxSchedule" className="text-gray-700 text-sm font-bold">
-                            Upload Tax Schedule (csv):
+                        <p className="text-gray-700 text-sm font-bold mb-2">
+                            Upload Tax Schedule  (csv):
+                        </p>
+                        <input onClick={(e) => (e.target.value = null)} type="file" id="taxSchedule" className=" hidden" onChange={handleTaxScheduleChange} />
+                        <label
+                            htmlFor='taxSchedule'
+                            // style={{ backgroundColor: "#84abeb" }}
+                            className="btn btn-default bg-gray-400 text-white rounded-md mx-2"
+                        >
+                            select file
                         </label>
-                        <input type="file" id="taxSchedule" className="px-2 py-2 border rounded-md" onChange={handleTaxScheduleChange} />
+                        <p className='my-4'>{taxScheduleFiles ? taxScheduleFiles.name : ""}</p>
                     </div>
 
                     <div>
@@ -169,6 +197,7 @@ const YearAndUpload = ({ years, selectedScope, toggleVis, checklistItem, checkli
                             Upload Remittance (all monthly remittance):
                         </label>
                         <input type="file" id="remittance" className="px-2 py-2 border rounded-md" onChange={handleRemittanceChange} />
+
                     </div>
 
                 </div>

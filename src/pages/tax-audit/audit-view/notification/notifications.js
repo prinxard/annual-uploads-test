@@ -97,7 +97,14 @@ const AuditNotice = () => {
                 <select
                     onChange={(e) => handleActionChange(e.target.value, rowData)}
                     defaultValue=""
-                    className="appearance-none bg-transparent border-none focus:outline-none"
+                    // className="appearance-none bg-transparent border-none 
+                    style={{
+                        appearance: 'none',
+                        background: 'transparent',
+                        border: 'none',
+                        outline: 'none' ,
+                        cursor: 'pointer'
+                      }}
                 >
                     <option value="" disabled hidden>
                         {/* More...  */}
