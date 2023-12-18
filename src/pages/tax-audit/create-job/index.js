@@ -164,7 +164,7 @@ const CreateJob = () => {
                                 ref={register()}
                             >
                                 <option value="">Select type</option>
-                                <option value="TACC">TACC</option>
+                                {/* <option value="TACC">TACC</option> */}
                                 <option value="Tax audit only">Tax Audit Only</option>
                             </select>
                         </div>
@@ -214,7 +214,7 @@ const CreateJob = () => {
                             >
                                 <option value="">Select type</option>
                                 <option value="Audit Visit">Audit Visit</option>
-                                <option value="Demand Notice">Demand Notice</option>
+                                {/* <option value="Demand Notice">Demand Notice</option> */}
                             </select>
                         </div>
 
