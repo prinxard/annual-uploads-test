@@ -1204,6 +1204,7 @@ const AnnualSupDocs = () => {
   };
 
   const SubmitUploads = () => {
+    setAuthToken()
     let kgtinyear = {
       year: year,
       employerId: kgtin
