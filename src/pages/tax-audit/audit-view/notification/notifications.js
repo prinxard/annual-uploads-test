@@ -107,8 +107,9 @@ const AuditNotice = () => {
                       }}
                 >
                     <option value="" disabled hidden>
-                        {/* More...  */}
-                        Choose an action
+                     
+                        More... 
+                        {/* Choose an action */}
                     </option>
 
                     <option value="details">Details</option>

@@ -34,7 +34,7 @@ export default function Notifiacklist() {
     const [letterState, setLetterState] = useState('hidden')
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { register, handleSubmit } = useForm();
-    const [scopeData, setUploadCheck] = useState([]);
+    const [notificationData, setNotification] = useState({});
     const { auth } = useSelector(
         (state) => ({
             auth: state.authentication.auth,
@@ -74,7 +74,6 @@ export default function Notifiacklist() {
     ];
 
 
-
     const onSubmit = async () => {
         formData.doneby = emailAdd
         formData.job_id = JobID
@@ -107,16 +106,18 @@ export default function Notifiacklist() {
     useEffect(() => {
         async function fetchPostData() {
             try {
-                const response = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-jobchecklist.php', {
+                const response = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-notifications-single.php', {
                     method: 'POST',
                     body: JSON.stringify({
-                        "job_id": JobID
+                        job_id: JobID,
+                        id: Notifid
+                        
                     })
                 })
                 const dataFetchJobDet = await response.json()
-                console.log("dataFetchJobDet", dataFetchJobDet);
-                const check = await dataFetchJobDet.checklists
-                setUploadCheck(check)
+                const notification = await dataFetchJobDet.body[0]
+                console.log("dataFetchJobDet", dataFetchJobDet.body[0]);
+                setNotification(notification)
             } catch (error) {
                 console.error('Server Error:', error)
             }
@@ -147,6 +148,25 @@ export default function Notifiacklist() {
         fetchPost();
     }, [JobID, Notifid]);
 
+    const today = new Date()
+    let formattedDate = today.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    let customDate = new Date(formData?.reschedule_date);
+    let rescheduleDate = customDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    let oldNoticeDate = new Date(notificationData?.notification_date);
+    let oldNoticeDateFormatted = oldNoticeDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
 
     function Letter() {
         return (
@@ -155,57 +175,25 @@ export default function Notifiacklist() {
                     <div className="text-justify" >
                         <p className="flex justify-between mt-3">   </p>
                         <p>Ref - {formData?.reschedule_lettersource}</p>
-                        <p>Date - {formData?.reschedule_date}</p>
+                        <p>Date -  {formattedDate}</p>
                         <p className="w-64">{"Address"}</p>
                         <p className="font-bold">Dear {formData?.reschedule_adressee},</p><br />
                         <div>
-                            <p className="font-bold">NOTIFICATION OF BACKDUTY TAX AUDIT EXERCISE {` (Jan ${auditStartYr} - Dec ${auditEndYr})`}</p><br />
+                            <p className="font-bold">RE-NOTIFICATION OF TAX AUDIT EXERCISE {` (Jan ${auditStartYr} - Dec ${auditEndYr})`}</p><br />
                         </div>
-                        <p>The above Subject refers;</p>
-                        <p>
-                            This is to notify you that the Kogi State Internal Revenue Service (KGIRS) wishes to carry
-                            out Tax Audit of all Taxes due from your Organization to the Kogi State Government for
-                            the period stated above. The exercise is instituted pursuant to section 46, 47 (4) and (4)
-                            of the Personal Income Tax Act, Cap P8, and Laws of the Federation of Nigeria as
-                            amended. The Audit will cover the following Taxes/Levies;
-                        </p><br />
-
-                        <br />
 
                         <p>
-                            The date scheduled for the commencement of the audit exercise at your Organization is
-                            two (2) weeks from the date of receipt of this letter. We hope that you will provide all
-                            necessary documents and support to the audit team to facilitate the exercise as required
-                            by law.
+                            Your letter dated <strong>{oldNoticeDateFormatted}</strong> on the above subject matter
+                            refers please.
+                            We wish to inform you that your request for the postponement of
+                            the proposed
+                            audit exercise has been approved by the Service.  The exercise
+                            has been rescheduled to hold on <strong> {rescheduleDate}. </strong>
+                            We anticipate maximum cooperation from you.
+                            Thank you.
+                        </p><br />
 
-                        </p><br />
-                        <p>
-                            It is pertinent to apprise you that exercise is for information gathering only and the
-                            auditors are not authorized to assess your Organization to tax. All reports are subjected to
-                            further checks and falsified or unsatisfactory reports will be rejected and investigated in
-                            the course of the assessment.
-
-                        </p><br />
-                        <p>
-                            Kindly note that in the event of any obstruction to this exercise, submission of incorrect or
-                            false information/reports, or any other action that may delay this exercise, the Chairman
-                            and/or the Directors of your Organization would be vicariously held liable and penalized in
-                            accordance with the statutory provisions of Personal Income Tax 1993 and as amended to
-                            date.
-                        </p><br />
-                        <p>
-                            In case of any undue advances to connive on the part of our representatives, please get in
-                            touch with Executive Chairman, Kogi State Internal Revenue Service immediately.
-                            Attached is the list of documents required for the Audit Exercise.
-                        </p><br />
-                        <div className="p-4">
-                            <ol style={{ listStyle: "i" }} >
-                                {scopeData?.map((item) => (
-                                    <li>{item.checklist_item}</li>
-
-                                ))}
-                            </ol>
-                        </div><br />
+             
                         <p>Thank you for the anticipated cooperation.</p> <br />
                         <p>
                             Yours Faithfully..
