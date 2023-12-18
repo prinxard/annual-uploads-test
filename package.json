@@ -19,6 +19,7 @@
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
     "accounting": "^0.4.1",
+    "antd": "^5.12.2",
     "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "chart.js": "^2.9.4",
@@ -48,7 +49,6 @@
     "prop-types": "^15.7.2",
     "rc-slider": "^9.7.1",
     "react": "17.0.1",
-    "react-dom": "17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-calendar": "^3.4.0",
     "react-chartjs-2": "^2.11.2",
@@ -58,6 +58,7 @@
     "react-date-range": "^1.4.0",
     "react-datepicker": "^4.7.0",
     "react-datetime": "^3.0.4",
+    "react-dom": "17.0.1",
     "react-hook-form": "^6.15.1",
     "react-icons": "^4.1.0",
     "react-interswitch": "^1.0.3",
@@ -102,5 +103,5 @@
   },
   "overrides": {
     "autoprefixer": "10.4.5"
-}
+  }
 }
