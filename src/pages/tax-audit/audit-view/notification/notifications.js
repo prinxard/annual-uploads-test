@@ -13,7 +13,6 @@ import Check from '@material-ui/icons/Check'
 import Remove from '@material-ui/icons/Remove'
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Clear from "@material-ui/icons/Clear";
-import { MoreHoriz, NextWeekRounded, Extension } from "@material-ui/icons";
 import MaterialTable from '@material-table/core';
 import NewNotificationButton from './../notification/button';
 import Modal from '@material-ui/core/Modal';
@@ -28,6 +27,7 @@ const AuditNotice = () => {
     const [selectedPdfUrl, setSelectedPdfUrl] = useState('');
     const [isModalOpenPDF, setIsModalOpenPDF] = useState(false);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [jobUsers, setJobUsers] = useState([]);
 
 
     const router = useRouter()
@@ -139,7 +139,6 @@ const AuditNotice = () => {
 
 
 
-    const usersArr = String(job.job_user).split(',')
 
     useEffect(() => {
 
@@ -155,7 +154,8 @@ const AuditNotice = () => {
 
                 const dataFetchJobDet = await response.json()
                 setJob(dataFetchJobDet.body[0])
-
+                const jobUsers = dataFetchJobDet?.body?.jobusers
+                setJobUsers(jobUsers)
                 const res = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-notifications-batch.php', {
                     method: 'POST',
                     body: JSON.stringify({
@@ -224,7 +224,7 @@ const AuditNotice = () => {
                             <p className="font-semibold text-gray-500">Taxpayer Details</p>
                             <hr />
                             <div className="flex justify-between">
-                                <p>Taxpayer: <p></p> </p>
+                                <p>Taxpayer: <p className="font-semibold">{job?.taxpayer_TaxpayerName}</p> </p>
                                 <p>Tax Id <p className="font-semibold">{job?.job_kgtin}</p></p>
                             </div>
                             <p className="font-semibold text-gray-500">Job Details</p>
@@ -244,8 +244,8 @@ const AuditNotice = () => {
                             <hr />
                             <div className="flex justify-between gap-2">
                                 <p>Auditor
-                                    {usersArr.map((user) => (
-                                        <p className="font-semibold">{user}</p>
+                                    {jobUsers?.map((user) => (
+                                        <p className="font-semibold">{user.name}</p>
                                     ))
                                     }
                                 </p>
@@ -300,7 +300,7 @@ const AuditNotice = () => {
             </div>
 
             <div className="flex justify-end m-2">
-                <NewNotificationButton id={jobId} auditStartYr={auditStartYr} auditEndYr={auditEndYr} />
+                <NewNotificationButton id={jobId} auditStartYr={auditStartYr} address={job?.taxpayer_Address} auditEndYr={auditEndYr} />
             </div>
             <MaterialTable title="Notifications"
                 data={notificationData}
