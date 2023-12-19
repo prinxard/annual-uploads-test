@@ -23,6 +23,7 @@ export default function Jobacklist() {
     const [isFetching, setIsFetching] = useState(() => true);
     const [jobAck, setJobAck] = useState([]);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [jobUsers, setJobUsers] = useState([]);
 
     const router = useRouter()
     const [job, setJob] = useState(() => []);
@@ -36,8 +37,6 @@ export default function Jobacklist() {
 
     const auditStartYr = dateStart.getFullYear()
     const auditEndYr = dateEnd.getFullYear()
-
-    const usersArr = String(job.job_user).split(',')
 
     const togglePanel = () => {
         setIsPanelOpen(!isPanelOpen);
@@ -74,14 +73,14 @@ export default function Jobacklist() {
         async function fetchPost() {
 
             try {
-                const res = await fetch('https://bespoque.dev/rhm/taxaudit/taxaudit-jobs-ack-batch.php', {
+                const res = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-jobs-ack-batch.php', {
                     method: 'POST',
                     body: JSON.stringify({
                         "job_id": JobID,
                     })
                 })
 
-                const response = await fetch('https://bespoque.dev/rhm/taxaudit/taxaudit-fetch-singlejob.php', {
+                const response = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-fetch-singlejob.php', {
                     method: 'POST',
                     body: JSON.stringify({
                         "param1": "id",
@@ -93,6 +92,9 @@ export default function Jobacklist() {
 
                 const dataFetchJobDet = await response.json()
                 setJob(dataFetchJobDet.body[0])
+                
+                const jobUsers = dataFetchJobDet?.body?.jobusers
+                setJobUsers(jobUsers)
                 setIsFetching(false)
             } catch (error) {
                 console.error('Server Error:', error)
@@ -125,7 +127,7 @@ export default function Jobacklist() {
                             <p className="font-semibold text-gray-500">Taxpayer Details</p>
                             <hr />
                             <div className="flex justify-between">
-                                <p>Taxpayer: <p></p> </p>
+                                <p>Taxpayer: <p className="font-semibold">{job?.taxpayer_TaxpayerName}</p> </p>
                                 <p>Tax Id <p className="font-semibold">{job?.job_kgtin}</p></p>
                             </div>
                             <p className="font-semibold text-gray-500">Job Details</p>
@@ -145,8 +147,8 @@ export default function Jobacklist() {
                             <hr />
                             <div className="flex justify-between gap-2">
                                 <p>Auditor
-                                    {usersArr.map((user) => (
-                                        <p className="font-semibold">{user}</p>
+                                    {jobUsers?.map((user) => (
+                                        <p className="font-semibold">{user.name}</p>
                                     ))
                                     }
                                 </p>

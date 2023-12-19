@@ -25,6 +25,7 @@ function Index() {
   const [checkList, setCheckLists] = useState([]);
   const [complianceList, setComplianceList] = useState([]);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [job, setJob] = useState(() => []);
 
   const fields = [
     {
@@ -69,8 +70,8 @@ function Index() {
             id: ""
           })
         })
-        const dataFetchJobDet = await response.json()
-        setCheckLists(dataFetchJobDet.checklists);
+        const dataFetchCheck = await response.json()
+        setCheckLists(dataFetchCheck.checklists);
 
         const res = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-compliance-batch.php', {
           method: 'POST',
@@ -80,7 +81,17 @@ function Index() {
         })
         const dataFetchComp = await res.json()
         setIsFetching(false)
-        // setComplianceList(dataFetchComp)
+    
+        const jobResponse = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-fetch-singlejob.php', {
+          method: 'POST',
+          body: JSON.stringify({
+              "param1": "id",
+              "param2": JobID
+          })
+      })
+      const dataFetchJobDet = await jobResponse.json()
+      setJob(dataFetchJobDet.body[0])
+
 
         if (dataFetchComp && dataFetchComp.body) {
           const updatedData = {

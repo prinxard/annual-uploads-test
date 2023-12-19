@@ -84,8 +84,7 @@ function ApproveAuditUploads() {
         // }
     });
 
-    console.log("documentValues", documentValues);
-    console.log("uploadsArr", uploadsArr);
+
     useEffect(() => {
 
         async function fetchPost() {
@@ -199,9 +198,11 @@ function ApproveAuditUploads() {
                         ) :
 
                             (
-                                <button className="bg-green-500 h-9 text-white py-2 px-4 rounded my-2" onClick={() => handleButtonClick(checklistID)}>
-                                    Approve
-                                </button>
+                          
+                                    <button className="bg-green-500 h-9 text-white py-2 px-4 rounded my-2" onClick={() => handleButtonClick(checklistID)}>
+                                        Approve
+                                    </button>
+                                
                             )}
 
                     </div>

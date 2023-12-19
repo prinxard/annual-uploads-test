@@ -1,11 +1,8 @@
-import url from "../../config/url";
-import setAuthToken from "../../functions/setAuthToken";
+
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { formatNumber } from "../../functions/numbers";
 import dateformat from "dateformat";
 import Loader from "react-loader-spinner";
-import { ViewVerifiedObjectionTable } from "../tables/viewVerifiedObjection";
 import { ViewApprovedObjectionTable } from "../tables/viewApprovedObjection";
 
 const ViewApprovedObjection = () => {
@@ -16,7 +13,6 @@ const ViewApprovedObjection = () => {
 
   useEffect(() => {
     let num = 1
-    // setAuthToken();
     const fetchPost = async () => {
       try {
         // let res = await axios.get(`${url.BASE_URL}forma/objection?status=Approved`);

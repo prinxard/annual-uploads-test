@@ -25,6 +25,7 @@ const AuditNotice = () => {
     const [corresp, setCorData] = useState(() => []);
     const [selectedRow, setSelectedRow] = useState(null);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [jobUsers, setJobUsers] = useState([]);
 
     const router = useRouter()
     const { id } = router?.query
@@ -69,8 +70,6 @@ const AuditNotice = () => {
     const auditStartYr = dateStart.getFullYear()
     const auditEndYr = dateEnd.getFullYear()
 
-    const usersArr = String(job.job_user).split(',')
-
     const handleRowClick = (event, rowData) => {
         setSelectedRow(rowData);
     };
@@ -91,7 +90,7 @@ const AuditNotice = () => {
 
         async function fetchPost() {
             try {
-                const response = await fetch('https://bespoque.dev/rhm/taxaudit/taxaudit-fetch-singlejob.php', {
+                const response = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-fetch-singlejob.php', {
                     method: 'POST',
                     body: JSON.stringify({
                         "param1": "id",
@@ -101,6 +100,9 @@ const AuditNotice = () => {
 
                 const dataFetchJobDet = await response.json()
                 setJob(dataFetchJobDet.body[0])
+                
+                const jobUsers = dataFetchJobDet?.body?.jobusers
+                setJobUsers(jobUsers)
 
                 const res = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-correspondence-batch.php', {
                     method: 'POST',
@@ -144,7 +146,7 @@ const AuditNotice = () => {
                             <p className="font-semibold text-gray-500">Taxpayer Details</p>
                             <hr />
                             <div className="flex justify-between">
-                                <p>Taxpayer: <p></p> </p>
+                            <p>Taxpayer: <p className="font-semibold">{job?.taxpayer_TaxpayerName}</p> </p>
                                 <p>Tax Id <p className="font-semibold">{job?.job_kgtin}</p></p>
                             </div>
                             <p className="font-semibold text-gray-500">Job Details</p>
@@ -164,8 +166,8 @@ const AuditNotice = () => {
                             <hr />
                             <div className="flex justify-between gap-2">
                                 <p>Auditor
-                                    {usersArr.map((user) => (
-                                        <p className="font-semibold">{user}</p>
+                                    {jobUsers?.map((user) => (
+                                        <p className="font-semibold">{user.name}</p>
                                     ))
                                     }
                                 </p>

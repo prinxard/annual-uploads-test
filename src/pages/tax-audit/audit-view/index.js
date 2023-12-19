@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { ProcessorSpinner } from '../../../components/spiner';
-import SectionTitle from '../../../components/section-title';
 import Search from '@material-ui/icons/Search'
 import * as Icons from '../../../components/Icons/index'
 import SaveAlt from '@material-ui/icons/SaveAlt'
@@ -23,6 +22,7 @@ const Index = () => {
     const [job, setJob] = useState(() => []);
     const [historyData, setHistoryData] = useState(() => []);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [jobUsers, setJobUsers] = useState([]);
 
     const router = useRouter()
     const { id } = router?.query
@@ -56,7 +56,6 @@ const Index = () => {
 
     const auditStartYr = dateStart.getFullYear()
     const auditEndYr = dateEnd.getFullYear()
-    const usersArr = String(job.job_user).split(',')
 
     useEffect(() => {
 
@@ -71,8 +70,9 @@ const Index = () => {
                 })
 
                 const dataFetchJobDet = await response.json()
+                const jobUsers = dataFetchJobDet?.body?.jobusers
+                setJobUsers(jobUsers)
                 setJob(dataFetchJobDet.body[0])
-
                 const res = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-activities.php', {
                     method: 'POST',
                     body: JSON.stringify({
@@ -116,7 +116,7 @@ const Index = () => {
                             <p className="font-semibold text-gray-500">Taxpayer Details</p>
                             <hr />
                             <div className="flex justify-between">
-                                <p>Taxpayer: <p></p> </p>
+                                <p>Taxpayer: <p className="font-semibold">{job?.taxpayer_TaxpayerName}</p> </p>
                                 <p>Tax Id <p className="font-semibold">{job?.job_kgtin}</p></p>
                             </div>
                             <p className="font-semibold text-gray-500">Job Details</p>
@@ -136,8 +136,8 @@ const Index = () => {
                             <hr />
                             <div className="flex justify-between gap-2">
                                 <p>Auditor
-                                    {usersArr.map((user) => (
-                                        <p className="font-semibold">{user}</p>
+                                    {jobUsers.map((user) => (
+                                        <p className="font-semibold">{user.name}</p>
                                     ))
                                     }
                                 </p>

@@ -196,7 +196,7 @@ const scope = {
 
 
 
-const NotificationModal = ({ isOpen, closeModal, id, auditStartYr, auditEndYr }) => {
+const NotificationModal = ({ isOpen, closeModal, id, auditStartYr, auditEndYr, address }) => {
     const [isFetching, setIsLoading] = useState(false);
     const [checkboxes, setCheckboxes] = useState(new Array(scope.checklists.length).fill(false));
     const [selectedItems, setSelectedItems] = useState([]);
@@ -293,7 +293,7 @@ const NotificationModal = ({ isOpen, closeModal, id, auditStartYr, auditEndYr })
                         <p className="flex justify-between mt-3">   </p>
                         <p>Ref - {formData.notification_fileno}</p>
                         <p>Date - {formData.notification_date}</p>
-                        <p className="w-64">{"Address"}</p>
+                        <p className="w-64">{address}</p>
                         <p className="font-bold">Dear {formData.notification_addressee},</p><br />
                         <div>
                             <p className="font-bold">NOTIFICATION OF BACKDUTY TAX AUDIT EXERCISE {` (Jan ${auditStartYr} - Dec ${auditEndYr})`}</p><br />
