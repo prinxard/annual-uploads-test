@@ -45,7 +45,7 @@ const LeftSidebar = () => {
   let reportRange = [39, 1, 9]
   let payeTccInitiator = [29, 1]
   let payeTccApprover = [1, 30, 21, 30]
-  let auditPrint = [1, 42]
+  let auditPrint = [1, 42, 19]
   let audit = [1, 19]
   let otherTaxes = [1, 24]
   let bdprs = [6, 7, 1]
