@@ -69,7 +69,7 @@ const Index = () => {
         async function fetchPost() {
             setIsFetching(true)
             try {
-                const response = await fetch('https://bespoque.dev/rhm/taxaudit/taxaudit-jobs-batch.php', {
+                const response = await fetch('https://test.rhm.backend.bespoque.ng/taxaudit/taxaudit-jobs-batch.php', {
                     method: 'POST',
                     body: JSON.stringify({
                         "post": "action"
@@ -116,8 +116,6 @@ const Index = () => {
                         {
                             icon: Edit,
                             tooltip: 'Edit',
-                            // onClick: (event, rowData) => router.push(`/cluster-management/cluster-target/edit?id=${rowData.target_id}`),
-
                         },
                     ]
                 }

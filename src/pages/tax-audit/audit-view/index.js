@@ -136,7 +136,7 @@ const Index = () => {
                             <hr />
                             <div className="flex justify-between gap-2">
                                 <p>Auditor
-                                    {jobUsers.map((user) => (
+                                    {jobUsers?.map((user) => (
                                         <p className="font-semibold">{user.name}</p>
                                     ))
                                     }

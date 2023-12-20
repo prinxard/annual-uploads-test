@@ -44,7 +44,7 @@ const CreateJob = () => {
     }
 
     const decoded = jwt.decode(auth);
-    const emailAdd = decoded.user
+    const staffName = decoded?.staffName
 
     const handleTaxIdChange = (e) => {
         const { value } = e.target;
@@ -52,6 +52,7 @@ const CreateJob = () => {
         setTaxId(onlyNumbers);
     };
 
+    
 
 
     setAuthToken()
@@ -103,9 +104,8 @@ const CreateJob = () => {
         jobdata.job_kgtin = tpDetail?.KGTIN
         jobdata.job_start_status = "Pending"
         jobdata.job_progress_status = "Pending"
-        jobdata.job_initiator = emailAdd
+        jobdata.job_initiator = staffName
         jobdata.job_user = selectedValues
-        console.log("Job data", jobdata);
         try {
             const response = await fetch('https://bespoque.dev/rhm/taxaudit/taxaudit-newjob.php', {
                 method: 'POST',
