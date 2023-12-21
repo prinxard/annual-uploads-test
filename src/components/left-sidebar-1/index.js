@@ -22,9 +22,7 @@ const LeftSidebar = () => {
   } = useSelector(
     (state) => ({
       navigationAdmin: state.navigationAdmin,
-      navigation: state.navigation,
       authentication: state.authentication.auth,
-      individualNavigation: state.individualNavigation,
       navigationApprover: state.navigationApprover,
       navigationCreator: state.navigationCreator,
       navigationCreatorTcc: state.navigationCreatorTcc,
