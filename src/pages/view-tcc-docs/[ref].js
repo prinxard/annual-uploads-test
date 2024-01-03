@@ -16,25 +16,15 @@ const ViewDocumentsTcc = () => {
     const uploadBase = 'https://annualuploads.bespoque.dev/rhm-live/uploads/da/tcc/'
     const appletter = uploads.filter(data => data.item === "application_letter");
     const docLet = appletter.map(item => item.doc)
-
-    const paySlip = uploads.filter(data => data.item === "payslip");
-    const docPay = paySlip.map(item => item.doc)
-
+    
     const passPort = uploads.filter(data => data.item === "passport");
     const docPass = passPort.map(item => item.doc)
-
-    const idCard = uploads.filter(data => data.item === "idcard");
-    const docId = idCard.map(item => item.doc)
 
     const incomeForm = uploads.filter(data => data.item === "income_form");
     const docIncomeForm = incomeForm.map(item => item.doc)
 
-    const introLetter = uploads.filter(data => data.item === "intro_letter");
-    const docIntroLett = introLetter.map(item => item.doc)
-
     const sign = uploads.filter(data => data.item === "sign");
     const docSign = sign.map(item => item.doc)
-
 
     useEffect(() => {
         if (router && router.query) {
@@ -96,7 +86,7 @@ const ViewDocumentsTcc = () => {
                         <div className="flex">
                             {docLet.map((element, i) => (
                                 <div key={i} className="p-2">
-                                    <a href={`${uploadBase}${element}`} target="_blank" className="underline underline-offset-4 text-blue-600">Download</a>
+                                    <a href={`${uploadBase}${element}`} target="_blank" rel='noreferrer' className="underline underline-offset-4 text-blue-600" >Download</a>
                                 </div>
                             ))}
                         </div>
@@ -112,7 +102,7 @@ const ViewDocumentsTcc = () => {
                         <div className="flex">
                             {docPass.map((element, i) => (
                                 <div key={i} className="p-2">
-                                    <a href={`${uploadBase}${element}`} target="_blank" className="underline underline-offset-4 text-blue-600">Download</a>
+                                    <a  rel='noreferrer' href={`${uploadBase}${element}`} target="_blank" className="underline underline-offset-4 text-blue-600">Download</a>
                                 </div>
                             ))}
                         </div>
@@ -128,7 +118,7 @@ const ViewDocumentsTcc = () => {
                         <div className="flex">
                             {docIncomeForm.map((element, i) => (
                                 <div key={i} className="p-2">
-                                    <a href={`${uploadBase}${element}`} target="_blank" className="underline underline-offset-4 text-blue-600">Download</a>
+                                    <a  rel='noreferrer' href={`${uploadBase}${element}`} target="_blank" className="underline underline-offset-4 text-blue-600">Download</a>
                                 </div>
                             ))}
                         </div>
@@ -144,7 +134,7 @@ const ViewDocumentsTcc = () => {
                         <div className="flex">
                             {docSign.map((element, i) => (
                                 <div key={i} className="p-2">
-                                    <a href={`${uploadBase}${element}`} target="_blank" className="underline underline-offset-4 text-blue-600">Download</a>
+                                    <a  rel='noreferrer' href={`${uploadBase}${element}`} target="_blank" className="underline underline-offset-4 text-blue-600">Download</a>
                                 </div>
                             ))}
                         </div>
