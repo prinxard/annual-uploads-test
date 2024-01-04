@@ -11,8 +11,7 @@ import UpdateUser from "../tables/viewUsers";
 
 const UpdateSingleUser = () => {
   const [user, setUser] = useState([]);
-  const [groups, setGroups] = useState([]);
-
+  const [groupsArray, setGroupsArray] = useState([]);
   const [isFetching, setIsFetching] = useState(() => true);
 
   const router = useRouter();
@@ -20,7 +19,7 @@ const UpdateSingleUser = () => {
     if (router && router.query) {
       let useEmail = router.query.ref;
       let email = {
-        "email": `${useEmail}`
+        email: useEmail
       }
       setAuthToken();
       const fetchPost = async () => {
@@ -31,10 +30,13 @@ const UpdateSingleUser = () => {
           res = res.data.body;
           let userDet = res.user
           let userGrp = res.groups
-          console.log(res);
           setUser(userDet)
-          setGroups(userGrp)
           setIsFetching(false);
+          let userGrpArr = userGrp?.map((el) => {
+            return el.group
+          })
+          let userGroups = userGrpArr?.map(String)
+          setGroupsArray(userGroups)
         } catch (e) {
           setIsFetching(false);
         }
@@ -44,7 +46,6 @@ const UpdateSingleUser = () => {
   }, [router]);
 
 
-
   return (
     <>
       <SectionTitle subtitle="Edit User" />
@@ -52,7 +53,7 @@ const UpdateSingleUser = () => {
       <Widget>
 
         <>
-          {isFetching ? (
+          {isFetching ?
             <div className="flex justify-center item mb-2">
               <Loader
                 visible={isFetching}
@@ -65,9 +66,10 @@ const UpdateSingleUser = () => {
               />
               <p>Fetching data...</p>
             </div>
-          ) :
-            <UpdateUser user={user} groups={groups}/>
+            :
+            <UpdateUser user={user} groups={groupsArray} />
           }
+
         </>
       </Widget>
     </>

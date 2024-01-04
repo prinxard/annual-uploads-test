@@ -54,7 +54,6 @@ const CreateJob = () => {
 
     
 
-
     setAuthToken()
     const validateTP = async (taxId) => {
         setIsFetching(true)
