@@ -57,7 +57,6 @@ export default function Payslip() {
     let upfrontWatch = watch("upfront", "0").replace(/,/g, '')
     let watch_relief_notes = watch("other_relief_notes", "")
 
-
     let housing = watch("housing", "0").replace(/,/g, '')
     let trans_allw = watch("trans_allw", "0").replace(/,/g, '')
     let leave_allw = watch("leave_allw", "0").replace(/,/g, '')
@@ -73,7 +72,6 @@ export default function Payslip() {
     let payroll_year = watch("payroll_year", "")
     let consolidatedRelief
     let tax
-
 
     let allowance = (Number(housing) + Number(trans_allw) + Number(leave_allw) + Number(upfrontWatch) + Number(utilities) + Number(other_allw) + Number(benefits) + Number(month_13));
     let totalRelief = (Number(pension) + Number(nhf) + Number(lap));
@@ -145,7 +143,6 @@ export default function Payslip() {
     }
 
     tax = tax / 12 * no_months;
-
 
     let consolidatedIncomeS = (Number(basic) + ((Number(allowance) / 12) * Number(no_months)));
     let consolidatedReliefS = Number(consolidatedRelief) / 12 * Number(no_months);
