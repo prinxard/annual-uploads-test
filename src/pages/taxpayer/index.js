@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { useRouter } from 'next/router';
 
-
 export default function Index() {
     const [taxOffice, setTaxOffice] = useState([])
     const [incomeSource, setIncomSource] = useState([])
@@ -24,7 +23,6 @@ export default function Index() {
     } = useForm()
 
     const kogiLga = lga.filter(item => item.jtb_states === 22);
-
 
     useEffect(() => {
 
