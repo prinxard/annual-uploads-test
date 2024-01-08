@@ -5,10 +5,8 @@ import setAuthToken from "../../functions/setAuthToken";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from 'react-hook-form';
-import ProcessorSpinner, { AuthSpinner } from '../../components/spiner/index';
 import { useRouter } from 'next/router';
 import Loader from 'react-loader-spinner';
-
 
 
 export default function Index() {
@@ -97,7 +95,6 @@ export default function Index() {
     };
 
     useEffect(() => {
-
         setAuthToken();
         const fetchPost = async () => {
             try {
@@ -120,7 +117,6 @@ export default function Index() {
     }, []);
 
     const onSubmit = (data) => {
-        console.log("data", data);
         setIsFetching(true)
         axios.post(`${url.BASE_URL}taxpayer/new-individual`, data)
             .then(function (response) {
