@@ -1,22 +1,9 @@
 import SectionTitle from '../../components/dashboard/section-title';
 import Widget from '../../components/widget';
 import { IconTabs } from "../../components/tabs"
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer
-} from "recharts";
 import { AssesmentCount } from '../../components/rhmdashboard/headoffice';
 import { ATOPie } from '../../components/rhmdashboard/ato';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import UseFetcher from '../../components/fetcher/useFetcher';
 import url from "../../config/url";
 
@@ -38,7 +25,7 @@ const Index = () => {
   const [recentAssess, setRecentAssess] = useState([])
   const [topAssess, setTopAssess] = useState([])
 
-  const { data, isLoading, isError } = UseFetcher(
+  const { data, isLoading } = UseFetcher(
     `${url.BASE_URL}forma/dashboard`
   );
 
@@ -88,7 +75,8 @@ const Index = () => {
       content: (
         <>
           <div>
-            <AssesmentCount assessCountData={assessData}
+            <AssesmentCount
+              assessCountData={assessData}
               assessOverviewData={assessOverviewVariable}
               cummulativeAssess={cummulativeAssess}
               cumPerformance={cumPerformanceVariable}
