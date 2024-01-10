@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Section from "../dashboard/section";
 import { PieChart, Pie, Cell, LineChart, Line } from "recharts";
 import {
@@ -14,14 +14,17 @@ import {
 } from "recharts";
 import { formatNumber } from "accounting";
 import Widget1 from "../dashboard/widget-1";
-import { PendingRemittance, RevenueItems, TaxReceipt, TotalRemittance, Unassessed } from "../Icons";
-import setAuthToken from "../../functions/setAuthToken";
-import axios from "axios";
-import url from "../../config/url";
+import {
+  PendingRemittance,
+  RevenueItems,
+  TaxReceipt,
+  TotalRemittance,
+  Unassessed
+} from "../Icons";
 import Loader from "react-loader-spinner";
-import dateformat from "dateformat";
 
-// Assessmnt bar count variables
+
+// Assessment bar count variables
 let AjaokutaapprCount
 let AjaokutaSubCount
 
@@ -101,7 +104,6 @@ let ayingbaApprAssessedAmt
 let ayingbaSubAssessedAmt
 
 
-
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 const RADIAN = Math.PI / 180;
 
@@ -158,9 +160,6 @@ const renderCustomizedLabel2 = ({
 };
 
 
-
-
-
 export const CountPie = ({ cummulativeAssess }) => {
 
   const cummApproved = cummulativeAssess.filter(data => data.status === "Approved");
@@ -178,7 +177,6 @@ export const CountPie = ({ cummulativeAssess }) => {
     { name: "Submitted", value: cummSubCount },
     { name: "Approved", value: cummApprCount },
   ];
-
 
   return (
     <div style={{ width: '100%', height: 300 }}>
@@ -337,8 +335,6 @@ export const Lines = ({ perfTrend }) => {
     decUnassessedPay = Number(ind.unassessedAmountCollected)
   })
 
-
-
   const Trend = [
     {
       name: "Jan",
@@ -443,7 +439,6 @@ export const Lines = ({ perfTrend }) => {
 
 export const PerfPie = ({ cumPerformance }) => {
 
-
   let amountCol
   let assessedAmt
   let outstandingAss
@@ -457,9 +452,7 @@ export const PerfPie = ({ cumPerformance }) => {
 
   outstandingAss = (assessedAmt - amountCol)
 
-
   const dataCummPerf = [
-    // { name: "Approved assessment", value: 400 },
     { name: "Amount Collected", value: amountCol },
     { name: "Outstanding Assessment", value: outstandingAss },
     { name: "Unassessed Collection", value: unassessedCol }
@@ -500,8 +493,6 @@ export const AssesmentCount = ({
   exceptions,
   isLoading
 }) => {
-
-
 
   const ajaokutaApproved = assessCountData.filter(data => data.tax_office === "Ajaokuta" && data.status === "Approved");
   const ajaokutaSubmitted = assessCountData.filter(data => data.tax_office === "Ajaokuta" && data.status === "Submitted");
@@ -637,7 +628,6 @@ export const AssesmentCount = ({
   })
 
 
-
   const dataCount = [
     {
       name: "Lk2",
@@ -700,7 +690,6 @@ export const AssesmentCount = ({
       approved: ayingbaApprCount,
     }
   ];
-
 
   //   // Assessed Amount 
   const ajaokutaApprovedAssAmount = assessCountData.filter(data => data.tax_office === "Ajaokuta" && data.status === "Approved");
@@ -1356,7 +1345,7 @@ export const AssesmentCount = ({
     setExcept(() => exceptionRecords);
     setExceptTotal(() => excepsum);
 
-  }, );
+  }, []);
 
   console.log("assessOverviewData", assessOverviewData);
 
@@ -1560,9 +1549,7 @@ export const AssesmentCount = ({
       </div>
 
 
-
       <div className="flex flex-col lg:flex-row w-full lg:space-x-2 space-y-2 lg:space-y-0 mb-2 lg:mb-4">
-
         <div className="w-full lg:w-2/2">
           <Section >
             <p className="text-sm my-3 font-bold text-center">SUMMARY</p>
