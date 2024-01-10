@@ -266,11 +266,6 @@ const initialState = [
             url: '/reports-manifest',
             items: [],
           },
-          // {
-          //   title: 'DA Receipt',
-          //   url: '/da-receipt',
-          //   items: [],
-          // },
         ],
       },
 
