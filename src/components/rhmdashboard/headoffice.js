@@ -1356,8 +1356,9 @@ export const AssesmentCount = ({
     setExcept(() => exceptionRecords);
     setExceptTotal(() => excepsum);
 
-  }, []);
+  }, );
 
+  console.log("assessOverviewData", assessOverviewData);
 
   return (
     <>
