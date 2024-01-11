@@ -262,7 +262,7 @@ const Notification = () => {
                                                         setReviewModal(true)
                                                         setReviewDecline(e.target.value)
                                                     }
-                                                    } className="p-2 bg-red-400 text-white w-20 rounded" value="Decline">Decline</button>
+                                                    } className="p-2 bg-red-400 text-white w-20 ml-2 rounded" value="Decline">Decline</button>
                                                 </div>
                                             }
                                         </>
