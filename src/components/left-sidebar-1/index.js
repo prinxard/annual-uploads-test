@@ -26,7 +26,6 @@ const LeftSidebar = () => {
       navigationApprover: state.navigationApprover,
       navigationCreator: state.navigationCreator,
       navigationCreatorTcc: state.navigationCreatorTcc,
-      navigationCreatorApprover: state.navigationCreatorApprover,
       navigationReport: state.navigationReport,
       navigationApproverTcc: state.navigationApproverTcc,
       navigationAuditPrint: state.navigationAuditPrint,
@@ -40,9 +39,9 @@ const LeftSidebar = () => {
   let approverRange = [1, 2, 3, 12, 21, 27, 20]
   let payeTccApprover = [1, 30]
   let creatorRange = [1, 4, 13, 15]
+  let payeTccInitiator = [29, 1]
   let adminRange = [1]
   let reportRange = [39, 1, 9]
-  let payeTccInitiator = [29, 1]
   let auditPrint = [1, 42, 19]
   let audit = [1, 19]
   let otherTaxes = [1, 24]
@@ -101,7 +100,7 @@ const LeftSidebar = () => {
     );
   }
 
-  if (StaffType.some(r => payeTccInitiator.includes(r)) && StaffType.some(r => payeTccInitiator.includes(r)) && StaffType.some(r => payeTccInitiator.includes(r))) {
+  if (StaffType.some(r => payeTccInitiator.includes(r))) {
     return (
       <div className="left-sidebar left-sidebar-1">
         <Logo />
